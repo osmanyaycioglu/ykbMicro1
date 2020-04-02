@@ -17,7 +17,7 @@ public class Employee {
     @GeneratedValue
     private long   empId;
 
-    @MyCustValid(value1 = 5, message = "Name field 5 den büyük olamaz")
+    @MyCustValid(value1 = 15, message = "Name field 5 den büyük olamaz")
     private String name;
     @Size(min = 3, max = 20, message = "Surname 3 ile 20 arasında olmalı")
     private String surname;

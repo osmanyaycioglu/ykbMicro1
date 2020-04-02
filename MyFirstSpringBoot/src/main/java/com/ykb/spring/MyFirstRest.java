@@ -1,5 +1,6 @@
 package com.ykb.spring;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -41,12 +42,13 @@ public class MyFirstRest {
         System.out.println("MyFrist Yaratıldı");
     }
 
-    @Autowired
-    private EmployeeDAO     empDao;
 
     @Autowired
     @Qualifier("osman")
     private EmployeeManager empManager;
+
+    @Autowired
+    private EmployeeDAO     empDao;
 
     @PostMapping("/addEmployee")
     public Employee hello8(@Validated @RequestBody final Employee employeeParam) {
@@ -57,9 +59,19 @@ public class MyFirstRest {
 
     @GetMapping("/getEmployees")
     public List<Employee> getEmployees() {
-        return this.empManager.getEmployees();
+        Iterable<Employee> findAllLoc = this.empDao.findAll();
+        List<Employee> retVal = new ArrayList<>();
+        for (Employee employeeLoc : findAllLoc) {
+            retVal.add(employeeLoc);
+        }
+        return retVal;
     }
 
+
+    @GetMapping("/find/{name}")
+    public List<Employee> hello6(@PathVariable("name") final String name) {
+        return this.empDao.findByName(name);
+    }
 
     @GetMapping("/hello6/{yas}")
     public Employee hello6(@RequestParam("isim") final String name,
