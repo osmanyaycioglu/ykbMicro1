@@ -10,6 +10,8 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -25,10 +27,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ykb.spring.beans.EmployeeManager;
+
 @RestController
 @RequestMapping("/first")
 @Validated
+// @RequestScope
+// @SessionScope
+// @ApplicationScope = singleton
 public class MyFirstRest {
+
+    public MyFirstRest() {
+        System.out.println("MyFrist Yaratıldı");
+    }
+
+    @Autowired
+    @Qualifier("osman")
+    private EmployeeManager empManager;
+
+    @PostMapping("/addEmployee")
+    public Employee hello8(@Validated @RequestBody final Employee employeeParam) {
+        this.empManager.addEmployee(employeeParam);
+        return employeeParam;
+    }
+
+    @GetMapping("/getEmployees")
+    public List<Employee> getEmployees() {
+        return this.empManager.getEmployees();
+    }
+
 
     @GetMapping("/hello6/{yas}")
     public Employee hello6(@RequestParam("isim") final String name,
@@ -59,6 +86,13 @@ public class MyFirstRest {
                              .body(new ErrorObj(exp.getMessage(),
                                                 120));
     }
+
+
+    // Customer Obj Json olarak alınacak
+    // Customer da username 5 ile 15 karakter
+    // password 6 ile 16 karater arasında
+    // year değişkeni Min ve Max ile validasyon
+    // Handle Exception Aşağıdaki gibi
 
 
     @ExceptionHandler(Exception.class)
@@ -112,12 +146,6 @@ public class MyFirstRest {
         return employeeLoc;
     }
 
-
-    @PostMapping("/hello8")
-    public Employee hello8(@Validated @RequestBody final Employee employeeParam) {
-        employeeParam.setAge(100);
-        return employeeParam;
-    }
 
     @PostMapping(value = "/hello9",
                  consumes = {

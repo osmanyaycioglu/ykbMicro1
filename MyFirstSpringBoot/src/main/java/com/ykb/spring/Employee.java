@@ -10,7 +10,7 @@ public class Employee {
     private String name;
     @Size(min = 3, max = 20, message = "Surname 3 ile 20 arasında olmalı")
     private String surname;
-    @Max(30)
+    @Max(value = 30, message = "Age 30 dan büyük olamaz")
     private int    age;
 
     public String getName() {
