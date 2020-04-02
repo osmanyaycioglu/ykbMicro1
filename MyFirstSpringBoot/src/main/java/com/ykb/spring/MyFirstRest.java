@@ -42,12 +42,16 @@ public class MyFirstRest {
     }
 
     @Autowired
+    private EmployeeDAO     empDao;
+
+    @Autowired
     @Qualifier("osman")
     private EmployeeManager empManager;
 
     @PostMapping("/addEmployee")
     public Employee hello8(@Validated @RequestBody final Employee employeeParam) {
         this.empManager.addEmployee(employeeParam);
+        this.empDao.save(employeeParam);
         return employeeParam;
     }
 
