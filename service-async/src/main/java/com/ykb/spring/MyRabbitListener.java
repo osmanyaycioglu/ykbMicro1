@@ -5,6 +5,7 @@ import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,8 +18,10 @@ public class MyRabbitListener {
                                                                   durable = "true",
                                                                   type = ExchangeTypes.DIRECT),
                                              key = "asynckey"))
-    public void handleMessage(final Customer cust) {
+    @SendTo("result_exchange/resultback")
+    public String handleMessage(final Customer cust) {
         System.out.println(cust);
+        return "Name : " + cust.getName();
     }
 
     @RabbitListener(bindings = @QueueBinding(value = @Queue(value = "asyncservice2",

@@ -1,19 +1,17 @@
 package com.ykb.spring;
 
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.bus.jackson.RemoteApplicationEventScan;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 @SpringBootApplication
-@EnableRabbit
+@EnableZuulProxy
 @EnableDiscoveryClient
-@RemoteApplicationEventScan
-public class ServiceAsyncApplication {
+public class ApiGatewayApplication {
 
     public static void main(final String[] args) {
-        SpringApplication.run(ServiceAsyncApplication.class,
+        SpringApplication.run(ApiGatewayApplication.class,
                               args);
     }
 
