@@ -1,10 +1,8 @@
 package com.ykb.micro;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,23 +16,32 @@ import org.springframework.web.context.annotation.ApplicationScope;
 @ApplicationScope
 public class CustomerRest {
 
-    private final Map<String, Customer> customerMap = new HashMap<>();
+    @Autowired
+    private ICustomerDAO custDao;
 
     @PostMapping("/add")
     public Customer addCustomer(@RequestBody final Customer customer) {
-        this.customerMap.put(customer.getUsername(),
-                             customer);
+        this.custDao.save(customer);
         return customer;
     }
 
     @GetMapping("/getall")
-    public List<Customer> getAllCustomers() {
-        return new ArrayList<>(this.customerMap.values());
+    public Customers getAllCustomers() {
+        Iterable<Customer> findAllLoc = this.custDao.findAll();
+        Customers customers = new Customers();
+        for (Customer customerLoc : findAllLoc) {
+            customers.addCustomer(customerLoc);
+        }
+        return customers;
     }
 
     @GetMapping("/get/{username}")
     public Customer getCustomer(@PathVariable("username") final String username) {
-        return this.customerMap.get(username);
+        Optional<Customer> findByIdLoc = this.custDao.findById(username);
+        if (findByIdLoc.isPresent()) {
+            return findByIdLoc.get();
+        }
+        return null;
     }
 
 }

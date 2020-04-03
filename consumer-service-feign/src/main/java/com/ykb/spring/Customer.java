@@ -1,12 +1,7 @@
-package com.ykb.micro;
+package com.ykb.spring;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-
-@Entity
 public class Customer {
 
-    @Id
     private String username;
     private String name;
     private String surname;
