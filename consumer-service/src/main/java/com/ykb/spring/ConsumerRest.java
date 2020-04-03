@@ -33,9 +33,9 @@ public class ConsumerRest {
 
     @GetMapping("/customer/getall")
     public List<Customer> getCustomer() {
-        List<Customer> forObjectLoc = this.rt.getForObject("http://EXPOSER/customer/getall",
-                                                           List.class);
-        return forObjectLoc;
+        Customers forObjectLoc = this.rt.getForObject("http://EXPOSER/customer/getall",
+                                                      Customers.class);
+        return forObjectLoc.getCustomerList();
     }
 
 
@@ -44,9 +44,9 @@ public class ConsumerRest {
         InstanceInfo inst = this.ec.getNextServerFromEureka("EXPOSER",
                                                             false);
 
-        List<Customer> forObjectLoc = this.rt.getForObject(inst.getHostName() + "/customer/getall",
-                                                           List.class);
-        return forObjectLoc;
+        Customers forObjectLoc = this.rt.getForObject(inst.getHostName() + "/customer/getall",
+                                                      Customers.class);
+        return forObjectLoc.getCustomerList();
     }
 
 }
